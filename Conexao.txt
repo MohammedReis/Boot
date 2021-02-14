@@ -1,0 +1,6 @@
+$host = "localhost";
+$user = "root"
+$pass = "root"
+$banco = "dados"
+
+$link = mysql_connect($host,$user,$pass,$banco)
