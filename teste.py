@@ -25,9 +25,9 @@ def arquivo():
 
     hora_moeda = []
     for sinal in lista:
-        dados = sinal.split(';')
+        dados = sinal.split(',')
 
-        hora_moeda.append(dados[0]+";"+dados[1]) 
+        hora_moeda.append(dados[0]+","+dados[1]+","+dados[2])
         
     
     return hora_moeda 
@@ -42,30 +42,23 @@ API.connect()#connect to iqoption
 
 hora_moeda = arquivo()
 for x in hora_moeda:
-    split = x.split(';')
+    split = x.split(',')
     hora = split[0]
     moeda = split[1]
+    par = split[2]
     
     lcltime = datetime.now().strftime('%H:%M')
     while(hora != lcltime):
         lcltime = datetime.now().strftime('%H:%M')
     else:
         
-        Money=300
+        Money=10
         ACTIVES=moeda
-        ACTION="put"#or "put"
-        expirations_mode=1
+        ACTION=par
+        expirations_mode=15
         id=API.buy(Money,ACTIVES,ACTION,expirations_mode)
-        #id2=API.buy(Money,ACTIVES,ACTION,expirations_mode)
+        print("operação realizada, Boa Sorte: ")
+        
 
-        time.sleep(5)
-        sell_all=[]
-        sell_all.append(id)
-        #sell_all.append(id2)
-        print(API.sell_option(sell_all))
-    
-    
-    
-
-
+        
 
