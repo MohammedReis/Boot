@@ -18,7 +18,7 @@ def Martingale(valor, payout):
 	perca = float(valor)	
 		
 	while True:
-		if round(valor * payout, 2) > round(abs(perca) + lucro_esperado, 2):
+		if round(valor * payout, 2) > abs(perca) + lucro_esperado:
 			return round(valor, 2)
 			break
 		valor += 0.01
@@ -41,7 +41,7 @@ print('''
  ------------------------------------
 ''')
 
-API = IQ_Option('mohammedfrenzy2015@gmail.com', 'Mohammedd2@')
+API = IQ_Option('login', 'senha')
 API.connect()
 
 API.change_balance('PRACTICE') # PRACTICE / REAL

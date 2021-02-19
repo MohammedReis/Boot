@@ -1,8 +1,10 @@
 from iqoptionapi.stable_api import IQ_Option
 from time import localtime
 from datetime import datetime
+from colorama import init, Fore, Back
 import time
-
+import sys
+import threading
 
 def carregar_sinais():
     arquivo = open('sinais.txt', encoding='UTF-8')
@@ -17,8 +19,6 @@ def carregar_sinais():
 
     return lista
 
-
-
 def arquivo():
     
     lista = carregar_sinais()
@@ -32,12 +32,25 @@ def arquivo():
     
     return hora_moeda 
 
+def verificarWin(id):
+    print('Thread')
+    valor = API.check_win_v4(id)
+    print('Thread')
+    print(valor)
 
 
+init(autoreset=True)
+API = IQ_Option('login', 'senha')
+API.connect()
 
-print("login...")
-API=IQ_Option("mohammedfrenzy2015@gmail.com","Mohammedd2@")
-API.connect()#connect to iqoption
+API.change_balance('PRACTICE') # PRACTICE / REAL
+
+if API.check_connect():
+	print(' Conectado com sucesso!')
+else:
+	print(' Erro ao conectar')
+	input('\n\n Aperte enter para sair')
+	sys.exit()
 
 
 hora_moeda = arquivo()
@@ -55,9 +68,13 @@ for x in hora_moeda:
         Money=10
         ACTIVES=moeda
         ACTION=par
-        expirations_mode=15
-        id=API.buy(Money,ACTIVES,ACTION,expirations_mode)
+        expirations_mode=1
+        status,id=API.buy(Money,ACTIVES,ACTION,expirations_mode)
+        print(id)
         print("operação realizada, Boa Sorte: ")
+        time.sleep(1)
+        threading.Thread(target=verificarWin, args=(id,)).start()
+
         
 
         
