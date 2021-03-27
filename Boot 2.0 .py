@@ -6,7 +6,6 @@ import sys
 from colorama import init, Fore, Back
 import threading
 
-para = False
 
 def stop(lucro, gain, loss):
 	if lucro <= float('-' + str(abs(loss))):
@@ -45,12 +44,11 @@ def arquivo():
 
 def teste(id,lucro,Money,ACTIVES,ACTION,expirations_mode,martingale,contador,API,stop_loss,stop_gain):
 	if contador == 0:
-  		#status,valor = API.check_win_v4(id)
 		condicao = True
 		i = 0
 		if isinstance(id, int):
 			while condicao == True:
-				status,valor = API.check_win_digital_v2(id)
+				status,valor = API.check_win_v4(id)
 				if status:
 					valor = valor if valor > 0 else float('-' + str(abs(Money)))
 					lucro += round(valor, 2)
@@ -59,7 +57,8 @@ def teste(id,lucro,Money,ACTIVES,ACTION,expirations_mode,martingale,contador,API
 					if valor <= 0:
 						Money = money*2.1
 						stop(lucro, stop_gain, stop_loss)
-						status,id=API.buy_digital_spot(ACTIVES,Money,ACTION,expirations_mode)
+						#status,id=API.buy_digital_spot(ACTIVES,Money,ACTION,expirations_mode)
+						status,id=API.buy(Money,ACTIVES,ACTION,expirations_mode)
 						while condicao == True:
 							status,valor = API.check_win_digital_v2(id)
 							if status:
@@ -79,7 +78,7 @@ def teste(id,lucro,Money,ACTIVES,ACTION,expirations_mode,martingale,contador,API
 		i = 0
 		if isinstance(id, int):
 			while condicao == True:
-				status,valor = API.check_win_digital_v2(id)
+				status,valor = API.check_win_v4(id)
 				if status:
 					valor = valor if valor > 0 else float('-' + str(abs(Money)))
 					lucro += round(valor, 2)
@@ -88,7 +87,8 @@ def teste(id,lucro,Money,ACTIVES,ACTION,expirations_mode,martingale,contador,API
 					if valor <= 0:
 						Money = money*2.1
 						stop(lucro, stop_gain, stop_loss)
-						status,id=API.buy_digital_spot(ACTIVES,Money,ACTION,expirations_mode)
+						#status,id=API.buy_digital_spot(ACTIVES,Money,ACTION,expirations_mode)
+						status,id=API.buy(Money,ACTIVES,ACTION,expirations_mode)
 						while condicao == True:
 							status,valor = API.check_win_digital_v2(id)
 							if status:
@@ -108,7 +108,7 @@ def teste(id,lucro,Money,ACTIVES,ACTION,expirations_mode,martingale,contador,API
 		i = 0
 		if isinstance(id, int):
 			while condicao == True:
-				status,valor = API.check_win_digital_v2(id)
+				status,valor = API.check_win_v4(id)
 				if status:
 					valor = valor if valor > 0 else float('-' + str(abs(Money)))
 					lucro += round(valor, 2)
@@ -117,7 +117,8 @@ def teste(id,lucro,Money,ACTIVES,ACTION,expirations_mode,martingale,contador,API
 					if valor <= 0:
 						Money = money*2.1
 						stop(lucro, stop_gain, stop_loss)
-						status,id=API.buy_digital_spot(ACTIVES,Money,ACTION,expirations_mode)
+						#status,id=API.buy_digital_spot(ACTIVES,Money,ACTION,expirations_mode)
+						status,id=API.buy(Money,ACTIVES,ACTION,expirations_mode)
 						while condicao == True:
 							status,valor = API.check_win_digital_v2(id)
 							if status:
@@ -131,8 +132,6 @@ def teste(id,lucro,Money,ACTIVES,ACTION,expirations_mode,martingale,contador,API
 						Money = money
 						stop(lucro, stop_gain, stop_loss)
 						break    
-	if para == True:
-		sys.exit()
 	
 					
 
@@ -154,10 +153,10 @@ money = float(input("Qual o valor da entrada: "))
 martingale = int(input('Indique a quantia de martingales: '))
 stop_loss = float(input('Indique o valor de Stop Loss: '))
 stop_gain = float(input('Indique o valor de Stop Gain: '))
+lucro = 0
 
 print("\nAguandando a Hora para fazer a entrada !!! ")
 martingale += 1
-lucro = 0
 hora_moeda = arquivo()
 contador = 0
 for x in hora_moeda:
@@ -182,8 +181,8 @@ for x in hora_moeda:
 		expirations_mode=timeframe
 		valor = 0.0
 		if par == tendencia or tendencia == "False":
-			status,id=API.buy_digital_spot(ACTIVES,Money,ACTION,expirations_mode)
-			#status,id=API.buy(Money,ACTIVES,ACTION,expirations_mode)
+			#status,id=API.buy_digital_spot(ACTIVES,Money,ACTION,expirations_mode)
+			status,id=API.buy(Money,ACTIVES,ACTION,expirations_mode)
 			print("operação realizada, Boa Sorte: ")
 			
 			if status:
